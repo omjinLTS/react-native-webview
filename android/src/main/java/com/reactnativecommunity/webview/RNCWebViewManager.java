@@ -233,6 +233,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
 
         String fileName = URLUtil.guessFileName(url, contentDisposition, mimetype);
         String downloadMessage = "Downloading " + fileName;
+        String mLackPermissionToDownloadMessage = "Cannot download files as permission was denied. Please provide permission to write to storage, in order to download files.";
 
         //Attempt to add cookie, if it exists
         URL urlObj = null;
@@ -256,8 +257,8 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
 
         module.setDownloadRequest(request);
 
-        if (module.grantFileDownloaderPermissions()) {
-          module.downloadFile();
+        if (module.grantFileDownloaderPermissions(downloadMessage, mLackPermissionToDownloadMessage)) {
+          module.downloadFile(downloadMessage);
         }
       }
     });
